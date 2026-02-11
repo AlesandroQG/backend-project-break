@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-
 const Categories = ['Camisetas', 'Pantalones', 'Zapatos', 'Accesorios'];
 const Sizes = ['XS', 'S', 'M', 'L', 'XL'];
 
@@ -18,6 +17,7 @@ const productSchema = new mongoose.Schema({
   imagen: {
     type: String,
     required: true,
+    trim: true,
   },
   categoria: {
     type: String,
@@ -36,6 +36,6 @@ const productSchema = new mongoose.Schema({
   },
 }, { timestamps: true });
 
-module.exports = mongoose.model('Product', productSchema);
-module.exports.Categories = Categories;
-module.exports.Sizes = Sizes;
+const Product = mongoose.model('Product', productSchema);
+
+module.exports = { Product, Categories, Sizes };
