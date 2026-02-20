@@ -11,10 +11,10 @@ function renderProductCards(products, isDashboard = false) {
     .map(
       (product) => `
 		<article class="card">
-		<img src="${product.image}" alt="${product.name}" />
+		<img src="${product.imagen}" alt="${product.nombre}" />
 	<div class="card-body">
-		<h3>${product.name}</h3>
-		${isDashboard ? `<p class="muted">${product.category} · ${product.size}</p><p>${product.price.toFixed(2)} €</p>` : ""}
+		<h3>${product.nombre}</h3>
+		${isDashboard ? `<p class="muted">${product.categoria} · ${product.talla}</p><p>${product.precio.toFixed(2)} €</p>` : ""}
 		<div class="row">
 		<a class="btn-view" href="${isDashboard ? `/dashboard/${product._id}` : `/products/${product._id}`}">Ver</a>
 		${
@@ -33,14 +33,7 @@ function renderProductCards(products, isDashboard = false) {
 	</section>`;
 }
 
-function renderProductForm({
-  product,
-  action,
-  method = "POST",
-  title = "Nuevo producto",
-  buttonLabel = "Guardar",
-  errorMessage = "",
-}) {
+function renderProductForm(product, action, method = "POST", title = "Nuevo producto", buttonLabel = "Guardar", errorMessage = "") {
   const selectedCategory = product?.category || "Camisetas";
   const selectedSize = product?.size || "M";
   const methodOverride =
@@ -54,11 +47,11 @@ function renderProductForm({
 			${errorMessage ? `<p class="error-message">${errorMessage}</p>` : ""}
 			<form action="${action}" method="POST" class="stack">
 				${methodOverride}
-				<label>Nombre<input name="name" value="${product?.name || ""}" required /></label>
-				<label>Descripción<textarea name="description" required>${product?.description || ""}</textarea></label>
-				<label>Imagen (URL)<input name="image" type="url" value="${product?.image || ""}" required /></label>
+				<label>Nombre<input name="nombre" value="${product?.name || ""}" required /></label>
+				<label>Descripción<textarea name="descripcion" required>${product?.description || ""}</textarea></label>
+				<label>Imagen (URL)<input name="imagen" type="url" value="${product?.image || ""}" required /></label>
 				<label>Categoría
-					<select name="category" required>
+					<select name="categoria" required>
 				${categories
           .map(
             (category) =>
@@ -68,7 +61,7 @@ function renderProductForm({
 					</select>
 				</label>
 				<label>Talla
-					<select name="size" required>
+					<select name="talla" required>
 						${sizes
               .map(
                 (size) =>
@@ -77,7 +70,7 @@ function renderProductForm({
               .join("")}
 					</select>
 				</label>
-				<label>Precio<input name="price" type="number" min="0" step="0.01" value="${product?.price || ""}" required /></label>
+				<label>Precio<input name="precio" type="number" min="0" step="0.01" value="${product?.price || ""}" required /></label>
 				<button type="submit">${buttonLabel}</button>
 			</form>
 		</section>
@@ -86,14 +79,14 @@ function renderProductForm({
 }
 
 const renderProductDetail = (product, isDashboard = false) => {
-	const price = Number(product.price || 0).toFixed(2);
+	const price = Number(product.precio || 0).toFixed(2);
 	return `
 		<section class="detail">
-			<img src="${product.image}" alt="${product.name}" />
+			<img src="${product.imagen}" alt="${product.nombre}" />
 			<div class="detail-body">
-				<h1>${product.name}</h1>
-				<p class="muted">${product.category} - ${product.size}</p>
-				<p>${product.description}</p>
+				<h1>${product.nombre}</h1>
+				<p class="muted">${product.categoria} - ${product.talla}</p>
+				<p>${product.descripcion}</p>
 				<p>${price} €</p>
 				${isDashboard
 					? `

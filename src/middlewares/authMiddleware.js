@@ -1,5 +1,5 @@
 const requireAuth = (req, res, next) => {
-	res.isAdmin = req.originalUrl.startsWith('/dashboard');
+    req.isAdmin = req.session.isAdmin;
     next();
 };
 
