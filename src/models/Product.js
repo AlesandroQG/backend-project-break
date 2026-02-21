@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const Categories = ['Camisetas', 'Pantalones', 'Zapatos', 'Accesorios'];
-const Sizes = ['XS', 'S', 'M', 'L', 'XL'];
+const Sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL','32','34','36','38','40','42','44','46'];
 
 const productSchema = new mongoose.Schema({
   nombre: {

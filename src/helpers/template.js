@@ -10,7 +10,7 @@ function renderProductCards(products, isDashboard = false) {
 	${products
     .map(
       (product) => `
-		<article class="card">
+		<article class="card" data-product-id="${product._id}">
 		<img src="${product.imagen}" alt="${product.nombre}" />
 	<div class="card-body">
 		<h3>${product.nombre}</h3>
@@ -20,9 +20,7 @@ function renderProductCards(products, isDashboard = false) {
 		${
       isDashboard
         ? `<a class="btn-edit" href="/dashboard/${product._id}/edit">Editar</a>
-		<form action="/dashboard/${product._id}/delete?_method=DELETE" method="POST">
-		<button type="submit" class="danger">Eliminar</button>
-	</form>`
+		<button class="danger" onclick="deleteProduct(\`${product._id}\`)">Eliminar</button>`
         : ""
     }
 	</div>
@@ -34,8 +32,8 @@ function renderProductCards(products, isDashboard = false) {
 }
 
 function renderProductForm(product, action, method = "POST", title = "Nuevo producto", buttonLabel = "Guardar", errorMessage = "") {
-  const selectedCategory = product?.category || "Camisetas";
-  const selectedSize = product?.size || "M";
+  const selectedCategory = product?.categoria || "Camisetas";
+  const selectedSize = product?.talla || "M";
   const methodOverride =
     method !== "POST"
       ? `<input type="hidden" name="_method" value="${method}" />`
@@ -47,9 +45,9 @@ function renderProductForm(product, action, method = "POST", title = "Nuevo prod
 			${errorMessage ? `<p class="error-message">${errorMessage}</p>` : ""}
 			<form action="${action}" method="POST" class="stack">
 				${methodOverride}
-				<label>Nombre<input name="nombre" value="${product?.name || ""}" required /></label>
-				<label>Descripción<textarea name="descripcion" required>${product?.description || ""}</textarea></label>
-				<label>Imagen (URL)<input name="imagen" type="url" value="${product?.image || ""}" required /></label>
+				<label>Nombre<input name="nombre" value="${product?.nombre || ""}" required /></label>
+				<label>Descripción<textarea name="descripcion" required>${product?.descripcion || ""}</textarea></label>
+				<label>Imagen (URL)<input name="imagen" type="url" value="${product?.imagen || ""}" required /></label>
 				<label>Categoría
 					<select name="categoria" required>
 				${categories
@@ -70,7 +68,7 @@ function renderProductForm(product, action, method = "POST", title = "Nuevo prod
               .join("")}
 					</select>
 				</label>
-				<label>Precio<input name="precio" type="number" min="0" step="0.01" value="${product?.price || ""}" required /></label>
+				<label>Precio<input name="precio" type="number" min="0" step="0.01" value="${product?.precio || ""}" required /></label>
 				<button type="submit">${buttonLabel}</button>
 			</form>
 		</section>
@@ -92,13 +90,24 @@ const renderProductDetail = (product, isDashboard = false) => {
 					? `
 					<div class="row">
 						<a class="btn-edit" href="/dashboard/${product._id}/edit">Editar</a>
-						<form action="/dashboard/${product._id}/delete?_method=DELETE" method="POST">
-							<button type="submit" class="danger">Eliminar</button>
-						</form>
+						<button class="danger" onclick="deleteProduct('${product._id}')">Eliminar</button>
 					</div>
 					`
 					: ''}
 			</div>
+		</section>
+	`;
+};
+// Formulario de login
+const renderLoginForm = () => {
+	return `
+		<section class="form-wrapper">
+			<h1>Iniciar Sesión</h1>
+			<form action="/login" method="POST" class="stack">
+				<label>Usuario<input name="username" type="text" required /></label>
+				<label>Contraseña<input name="password" type="password" required /></label>
+				<button type="submit">Entrar</button>
+			</form>
 		</section>
 	`;
 };
@@ -107,4 +116,5 @@ module.exports = {
   renderProductCards,
   renderProductForm,
   renderProductDetail,
+  renderLoginForm,
 };

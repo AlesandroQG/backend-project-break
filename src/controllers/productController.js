@@ -7,7 +7,7 @@ const productController = {
     createProduct: async (req, res) => {
         try {
             const product = await Product.create(req.body);
-            res.status(201).send(product);
+            res.redirect("/dashboard");
         } catch (error) {
             console.log(error);
             res.status(501).send({message: "There was a problem trying to create the product"});
@@ -15,7 +15,7 @@ const productController = {
     },
     showNewProduct: async (req, res) => {
         try {
-            if (res.isAdmin) {
+            if (req.isAdmin) {
                 const html = baseHtml("Crear Producto", getNavBar(true) + renderProductForm(null, "/dashboard"));
                 res.send(html);
             } else {
@@ -43,7 +43,7 @@ const productController = {
             } else {
                 products = await Product.find();
             }
-            const productCards = renderProductCards(products);
+            const productCards = renderProductCards(products, req.isAdmin);
             const html = baseHtml("Products", getNavBar(req.isAdmin) + productCards);
             res.send(html);
         } catch (error) {
@@ -90,8 +90,7 @@ const productController = {
             if (!task) {
                 res.status(404).send({message: "There is no product with that id"});
             }
-            const updatedProduct = await Product.findById(id);
-            res.status(201).send(updatedProduct);
+            res.redirect("/dashboard");
         } catch (error) {
             console.log(error);
             res.status(501).send({message: "There was a problem trying to update the product"});
@@ -124,6 +123,20 @@ const productController = {
         } catch (error) {
             console.log(error);
             res.status(501).send({message: "There was a problem trying to delete the product"});
+        }
+    },
+    //para creear el formulario de creación de admin
+    showAdminForm: async (req, res) => {
+        try {
+            if (req.isAdmin) {
+                const html = baseHtml("Crear Admin", getNavBar(true) + renderProductForm(null, "/dashboard/admin"));
+                res.send(html);
+            } else {
+                res.redirect("/products");
+            }
+        } catch (error) {
+            console.log(error);
+            res.status(501).send({message: "There was a problem trying to get the admin form"});
         }
     },
 };

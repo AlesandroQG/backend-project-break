@@ -16,6 +16,9 @@ function getNavbar(isDashboard = false) {
 		: '<a href="/login">Login</a>';
 
 	return `
+		<header class="header-banner">
+			<img src="/images/logo.png" alt="Deportes de Contacto" class="logo-banner">
+		</header>
 		<header class="navbar">
 			<div class="container navbar-content">
 				<div class="brand-spacer"></div>

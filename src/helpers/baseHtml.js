@@ -10,6 +10,23 @@ function baseHtml(title, body) {
 			</head>
 			<body>
 				${body}
+				<script>
+					async function deleteProduct(productId) {
+						if (confirm('¿Estás seguro de eliminar este producto?')) {
+							try {
+								const url = '/dashboard/' + productId + '/delete';
+								const response = await fetch(url, { method: 'DELETE' });
+								if (response.ok) {
+									const article = document.querySelector('[data-product-id="' + productId + '"]');
+									if (article) article.remove();
+								}
+							} catch (error) {
+								console.error('Error al eliminar:', error);
+								alert('Error al eliminar el producto');
+							}
+						}
+					}
+				</script>
 			</body>
 		</html>
 	`;

@@ -1,11 +1,13 @@
 const express = require("express");
 const session = require('express-session');
+const MongoStore = require('connect-mongo').default;
 const path = require('path');
 const cors = require("cors");
 const methodOverride = require("method-override");
+require('dotenv').config();
 
 const app = express();
-const PORT = 8080;
+const PORT = 3000;
 const connectDB = require("./config/db.js");
 const productRouter = require("./routes/productRoutes.js");
 
@@ -14,7 +16,19 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride("_method"));
-app.use(session({secret: 'secret-key', resave: false, saveUninitialized: false}));
+// Configuración de sesion con la base de datos de mongo
+app.use(session({
+    secret: 'secret-key',
+    resave: false,
+    saveUninitialized: false,
+    store: new MongoStore({
+        mongoUrl: process.env.MONGO_URI,
+        touchAfter: 24 * 3600
+    }),
+    cookie: { 
+        secure: false,
+            }
+}));
 
 connectDB();
 app.use("/", productRouter);
