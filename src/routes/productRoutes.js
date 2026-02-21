@@ -1,23 +1,33 @@
 const express = require("express");
-const productRouter = express.Router();
+const router = express.Router();
 const productController = require("../controllers/productController.js");
 const isAdmin = require("../middlewares/authMiddleware.js");
 
-productRouter.use(isAdmin);
+router.use(isAdmin);
 
-productRouter.get("/products", productController.showProducts);
-productRouter.get("/products/:id", productController.showProductById);
+router.get("/login", (req, res) => {
+    req.session.isAdmin = true;
+    res.redirect("/dashboard");
+});
 
-productRouter.get("/dashboard", productController.showProducts);
-productRouter.post("/dashboard", productController.createProduct);
-productRouter.get("/dashboard/new", productController.showNewProduct);
-productRouter.get("/dashboard/:id", productController.showProductById);
-productRouter.get("/dashboard/:id/edit", productController.showEditProduct);
-productRouter.put("/dashboard/:id", productController.updateProduct);
-productRouter.delete("/dashboard/:id/delete", productController.deleteProduct);
+router.get("/logout", (req, res) => {
+    req.session.isAdmin = false;
+    res.redirect("/products");
+});
 
-productRouter.use((req, res) => {
+router.get("/products", productController.showProducts);
+router.get("/products/:id", productController.showProductById);
+
+router.get("/dashboard", productController.showProducts);
+router.post("/dashboard", productController.createProduct);
+router.get("/dashboard/new", productController.showNewProduct);
+router.get("/dashboard/:id", productController.showProductById);
+router.get("/dashboard/:id/edit", productController.showEditProduct);
+router.put("/dashboard/:id", productController.updateProduct);
+router.delete("/dashboard/:id/delete", productController.deleteProduct);
+
+router.use((req, res) => {
     res.status(404).send(`hola mundo`);
 });
 
-module.exports = productRouter;
+module.exports = router;

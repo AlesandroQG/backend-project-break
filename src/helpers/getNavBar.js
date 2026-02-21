@@ -11,9 +11,9 @@ function getNavbar(isDashboard = false) {
 		? `
 			<a href="/dashboard">Dashboard</a>
 			${isDashboard ? '<a href="/dashboard/new">Nuevo</a>' : ''}
-			<a href="/products">Salir</a>
+			<a href="/logout">Salir</a>
 		`
-		: '<a href="/dashboard">Login</a>';
+		: '<a href="/login">Login</a>';
 
 	return `
 		<header class="navbar">

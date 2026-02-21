@@ -16,7 +16,7 @@ const productController = {
     showNewProduct: async (req, res) => {
         try {
             if (res.isAdmin) {
-                const html = baseHtml(getNavBar() + renderProductForm(null, "/dashboard"));
+                const html = baseHtml("Crear Producto", getNavBar(true) + renderProductForm(null, "/dashboard"));
                 res.send(html);
             } else {
                 res.redirect("/products");
@@ -37,9 +37,14 @@ const productController = {
     },
     showProducts: async (req, res) => {
         try {
-            const products = await Product.find();
+            let products;
+            if (req.query.category) {
+                products = await Product.find({categoria: req.query.category});
+            } else {
+                products = await Product.find();
+            }
             const productCards = renderProductCards(products);
-            const html = baseHtml("Products", getNavBar(res.isAdmin) + productCards);
+            const html = baseHtml("Products", getNavBar(req.isAdmin) + productCards);
             res.send(html);
         } catch (error) {
             console.log(error);
@@ -66,11 +71,11 @@ const productController = {
             if (!product) {
                 res.status(404).send({message: "There is no product with that id"});
             }
-            if (res.isAdmin) {
-                const html = baseHtml + getNavBar() + renderProductDetail(product);
+            if (req.isAdmin) {
+                const html = baseHtml("Producto", getNavBar(true) + renderProductDetail(product, true));
                 res.send(html);
             } else {
-                const html = baseHtml + getNavBar() + renderProductDetail(product);
+                const html = baseHtml("Producto", getNavBar() + renderProductDetail(product));
                 res.send(html);
             }
         } catch (error) {
@@ -95,10 +100,9 @@ const productController = {
     showEditProduct: async (req, res) => {
         const id = req.params.id;
         try {
-            if (res.isAdmin) {
-                const products = await Product.findById(id);
-                const productCards = getProductCards(products);
-                const html = baseHtml + getNavBar() + productCards;
+            if (req.isAdmin) {
+                const product = await Product.findById(id);
+                const html = baseHtml("Editar Producto", getNavBar(true) + renderProductForm(product, "/dashboard"));
                 res.send(html);
             } else {
                 res.redirect("/products");

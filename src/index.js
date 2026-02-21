@@ -1,4 +1,5 @@
 const express = require("express");
+const session = require('express-session');
 const path = require('path');
 const cors = require("cors");
 const methodOverride = require("method-override");
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride("_method"));
+app.use(session({secret: 'secret-key', resave: false, saveUninitialized: false}));
 
 connectDB();
 app.use("/", productRouter);
