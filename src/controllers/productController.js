@@ -1,7 +1,7 @@
 const { Product } = require("../models/Product.js");
 const baseHtml = require("../helpers/baseHtml.js");
 const getNavBar = require("../helpers/getNavBar.js");
-const { getProductCards } = require("../helpers/template.js");
+const { renderProductCards, renderProductForm, renderProductDetail } = require("../helpers/template.js");
 
 const productController = {
     createProduct: async (req, res) => {
@@ -15,10 +15,12 @@ const productController = {
     },
     showNewProduct: async (req, res) => {
         try {
-            const products = await Product.find();
-            const productCards = getProductCards(products);
-            const html = baseHtml + getNavBar() + productCards;
-            res.send(html);
+            if (res.isAdmin) {
+                const html = baseHtml(getNavBar() + renderProductForm(null, "/dashboard"));
+                res.send(html);
+            } else {
+                res.redirect("/products");
+            }
         } catch (error) {
             console.log(error);
             res.status(501).send({message: "There was a problem trying to get all products"});
@@ -36,8 +38,8 @@ const productController = {
     showProducts: async (req, res) => {
         try {
             const products = await Product.find();
-            const productCards = getProductCards(products);
-            const html = baseHtml + getNavBar() + productCards;
+            const productCards = renderProductCards(products);
+            const html = baseHtml("Products", getNavBar(res.isAdmin) + productCards);
             res.send(html);
         } catch (error) {
             console.log(error);
@@ -64,7 +66,13 @@ const productController = {
             if (!product) {
                 res.status(404).send({message: "There is no product with that id"});
             }
-            res.status(201).send(product);
+            if (res.isAdmin) {
+                const html = baseHtml + getNavBar() + renderProductDetail(product);
+                res.send(html);
+            } else {
+                const html = baseHtml + getNavBar() + renderProductDetail(product);
+                res.send(html);
+            }
         } catch (error) {
             console.log(error);
             res.status(501).send({message: "There was a problem trying to get the product"});
@@ -85,11 +93,16 @@ const productController = {
         }
     },
     showEditProduct: async (req, res) => {
+        const id = req.params.id;
         try {
-            const products = await Product.find();
-            const productCards = getProductCards(products);
-            const html = baseHtml + getNavBar() + productCards;
-            res.send(html);
+            if (res.isAdmin) {
+                const products = await Product.findById(id);
+                const productCards = getProductCards(products);
+                const html = baseHtml + getNavBar() + productCards;
+                res.send(html);
+            } else {
+                res.redirect("/products");
+            }
         } catch (error) {
             console.log(error);
             res.status(501).send({message: "There was a problem trying to get all products"});
