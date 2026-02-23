@@ -16,3 +16,5 @@ npm start
 ```
 Si todo va bien, el servidor estará en funcionamiento.
 
+## Rutas
+

@@ -26,7 +26,7 @@ router.get("/dashboard/new", productController.showNewProduct);
 router.get("/dashboard/admin/new", productController.showAdminForm);
 router.post("/dashboard/admin", authController.createAdmin);
 router.get("/dashboard/:id/edit", productController.showEditProduct);
-router.post("/dashboard/:id", productController.updateProduct);
+router.put("/dashboard/:id", productController.updateProduct);
 router.delete("/dashboard/:id/delete", productController.deleteProduct);
 router.get("/dashboard/:id", productController.showProductById);
 
@@ -34,7 +34,7 @@ router.get("/dashboard/:id", productController.showProductById);
 router.post("/admin/create", authController.createAdmin);
 
 router.use((req, res) => {
-    res.status(404).send(`hola mundo`);
+    res.status(404).send(`Página no encontrada`);
 });
 
 module.exports = router;

@@ -15,7 +15,7 @@ const productController = {
     },
     showNewProduct: async (req, res) => {
         try {
-            if (req.isAdmin) {
+            if (req.session.isAdmin) {
                 const html = baseHtml("Crear Producto", getNavBar(true) + renderProductForm(null, "/dashboard"));
                 res.send(html);
             } else {
@@ -43,8 +43,8 @@ const productController = {
             } else {
                 products = await Product.find();
             }
-            const productCards = renderProductCards(products, req.isAdmin);
-            const html = baseHtml("Products", getNavBar(req.isAdmin) + productCards);
+            const productCards = renderProductCards(products, req.session.isAdmin);
+            const html = baseHtml("Products", getNavBar(req.session.isAdmin) + productCards);
             res.send(html);
         } catch (error) {
             console.log(error);
@@ -71,7 +71,7 @@ const productController = {
             if (!product) {
                 res.status(404).send({message: "There is no product with that id"});
             }
-            if (req.isAdmin) {
+            if (req.session.isAdmin) {
                 const html = baseHtml("Producto", getNavBar(true) + renderProductDetail(product, true));
                 res.send(html);
             } else {
@@ -99,9 +99,9 @@ const productController = {
     showEditProduct: async (req, res) => {
         const id = req.params.id;
         try {
-            if (req.isAdmin) {
+            if (req.session.isAdmin) {
                 const product = await Product.findById(id);
-                const html = baseHtml("Editar Producto", getNavBar(true) + renderProductForm(product, "/dashboard"));
+                const html = baseHtml("Editar Producto", getNavBar(true) + renderProductForm(product, `/dashboard/${id}`));
                 res.send(html);
             } else {
                 res.redirect("/products");
@@ -128,7 +128,7 @@ const productController = {
     //para creear el formulario de creación de admin
     showAdminForm: async (req, res) => {
         try {
-            if (req.isAdmin) {
+            if (req.session.isAdmin) {
                 const html = baseHtml("Crear Admin", getNavBar(true) + renderProductForm(null, "/dashboard/admin"));
                 res.send(html);
             } else {

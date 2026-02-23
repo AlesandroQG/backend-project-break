@@ -3,7 +3,6 @@ const requireAuth = (req, res, next) => {
     if (!req.session.isAdmin) {
         return res.redirect("/login");
     }
-    req.isAdmin = req.session.isAdmin;
     next();
 };
 
