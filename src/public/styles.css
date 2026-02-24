@@ -16,6 +16,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	position: relative;
+	background: #000000;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
@@ -39,6 +40,25 @@ body {
 	background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(20, 20, 40, 0.6));
 	z-index: -1;
 	pointer-events: none;
+}
+
+/* Fondo para móviles */
+@media (max-width: 1024px) {
+	body {
+		background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(20, 20, 40, 0.9)),
+		            url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><linearGradient id="grad" x1="0" y1="0" x2="1200" y2="800"><stop offset="0" style="stop-color:%23000000;stop-opacity:1" /><stop offset="100" style="stop-color:%23141428;stop-opacity:1" /></linearGradient></defs><rect fill="url(%23grad)" width="1200" height="800"/></svg>');
+		background-attachment: fixed;
+		background-size: cover;
+		background-position: center;
+	}
+
+	.background-video {
+		display: none !important;
+	}
+
+	.video-overlay {
+		display: none !important;
+	}
 }
 
 a {

@@ -9,12 +9,20 @@ function baseHtml(title, body) {
 				<link rel="stylesheet" href="/styles.css" />
 			</head>
 			<body>
-				<video autoplay muted loop playsinline class="background-video">
+				<video autoplay muted loop playsinline class="background-video" media="(min-width: 1025px)">
 					<source src="https://a.venum.com/f/117261/x/cfbb1a3834/vdef-banniere-kai-asakura-desk-1.mp4" type="video/mp4">
 				</video>
 				<div class="video-overlay"></div>
 				${body}
 				<script>
+					// Detectar si es móvil y desactivar video si es necesario
+					const video = document.querySelector('.background-video');
+					const isMobile = window.innerWidth <= 1024;
+					
+					if (isMobile && video) {
+						video.style.display = 'none';
+					}
+
 					async function deleteProduct(productId) {
 						if (confirm('¿Estás seguro de eliminar este producto?')) {
 							try {
