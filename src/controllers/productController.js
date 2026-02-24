@@ -1,7 +1,7 @@
 const { Product } = require("../models/Product.js");
 const baseHtml = require("../helpers/baseHtml.js");
 const getNavBar = require("../helpers/getNavBar.js");
-const { renderProductCards, renderProductForm, renderProductDetail } = require("../helpers/template.js");
+const { renderProductCards, renderProductForm, renderProductDetail, renderAdminForm } = require("../helpers/template.js");
 
 const productController = {
     createProduct: async (req, res) => {
@@ -129,11 +129,11 @@ const productController = {
             res.status(501).send({message: "There was a problem trying to delete the product"});
         }
     },
-    //para creear el formulario de creación de admin
+    //para creer el formulario de creación de admin
     showAdminForm: async (req, res) => {
         try {
             if (req.session.isAdmin) {
-                const html = baseHtml("Crear Admin", getNavBar(true) + renderProductForm(null, "/dashboard/admin"));
+                const html = baseHtml("Crear Admin", getNavBar(true) + renderAdminForm());
                 res.send(html);
             } else {
                 res.redirect("/products");

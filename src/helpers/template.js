@@ -112,9 +112,31 @@ const renderLoginForm = () => {
 	`;
 };
 
+// Formulario para crear admin
+const renderAdminForm = (action = "/dashboard/admin", errorMessage = "") => {
+	return `
+		<section class="form-wrapper">
+			<h1>Crear Nuevo Administrador</h1>
+			${errorMessage ? `<p class="error-message">${errorMessage}</p>` : ""}
+			<form action="${action}" method="POST" class="stack">
+				<label>
+					Usuario
+					<input name="username" type="text" placeholder="Nombre de usuario" required />
+				</label>
+				<label>
+					Contraseña
+					<input name="password" type="password" placeholder="Contraseña segura" required />
+				</label>
+				<button type="submit">Crear Administrador</button>
+			</form>
+		</section>
+	`;
+};
+
 module.exports = {
   renderProductCards,
   renderProductForm,
   renderProductDetail,
   renderLoginForm,
+  renderAdminForm,
 };

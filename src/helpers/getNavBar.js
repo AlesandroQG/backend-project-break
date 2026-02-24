@@ -10,7 +10,8 @@ function getNavbar(isDashboard = false) {
 	const authLinks = isDashboard
 		? `
 			<a href="/dashboard">Dashboard</a>
-			${isDashboard ? '<a href="/dashboard/new">Nuevo</a>' : ''}
+			${isDashboard ? '<a href="/dashboard/new">Nuevo Producto</a>' : ''}
+			${isDashboard ? '<a href="/dashboard/admin/new">Nuevo Admin</a>' : ''}
 			<a href="/logout">Salir</a>
 		`
 		: '<a href="/login">Login</a>';
