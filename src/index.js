@@ -14,8 +14,24 @@ const productRouter = require("./routes/productRoutes.js");
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use(methodOverride(function (req, res) {
+    if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+        var method = req.body._method;
+        delete req.body._method;
+        return method;
+    }
+}));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(methodOverride("_method"));
+
+// Logging middleware para depuración
+app.use((req, res, next) => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
+    if (req.body && Object.keys(req.body).length > 0) {
+        console.log("Body:", req.body);
+    }
+    next();
+});
+
 // Configuración de sesion con la base de datos de mongo
 app.use(session({
     secret: 'secret-key',
