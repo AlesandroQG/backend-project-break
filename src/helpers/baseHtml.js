@@ -9,6 +9,10 @@ function baseHtml(title, body) {
 				<link rel="stylesheet" href="/styles.css" />
 			</head>
 			<body>
+				<video autoplay muted loop playsinline class="background-video">
+					<source src="https://a.venum.com/f/117261/x/cfbb1a3834/vdef-banniere-kai-asakura-desk-1.mp4" type="video/mp4">
+				</video>
+				<div class="video-overlay"></div>
 				${body}
 				<script>
 					async function deleteProduct(productId) {
