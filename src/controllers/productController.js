@@ -85,12 +85,16 @@ const productController = {
     },
     updateProduct: async (req, res) => {
         const id = req.params.id;
+        console.log("=== UPDATE PRODUCT ===");
+        console.log("ID:", id);
+        console.log("Method:", req.method);
+        console.log("Body:", req.body);
         try {
             const task = await Product.findByIdAndUpdate(id, req.body);
             if (!task) {
-                res.status(404).send({message: "There is no product with that id"});
+                return res.status(404).send({message: "There is no product with that id"});
             }
-            res.redirect("/dashboard");
+            res.redirect("/products");
         } catch (error) {
             console.log(error);
             res.status(501).send({message: "There was a problem trying to update the product"});
@@ -101,7 +105,7 @@ const productController = {
         try {
             if (req.session.isAdmin) {
                 const product = await Product.findById(id);
-                const html = baseHtml("Editar Producto", getNavBar(true) + renderProductForm(product, `/dashboard/${id}`));
+                const html = baseHtml("Editar Producto", getNavBar(true) + renderProductForm(product, `/dashboard/${id}`, "PUT"));
                 res.send(html);
             } else {
                 res.redirect("/products");
