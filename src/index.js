@@ -10,6 +10,7 @@ const app = express();
 const PORT = 3000;
 const connectDB = require("./config/db.js");
 const productRouter = require("./routes/productRoutes.js");
+const apiRouter = require("./routes/apiRoutes.js");
 
 app.use(cors());
 app.use(express.json());
@@ -32,5 +33,6 @@ app.use(session({
 
 connectDB();
 app.use("/", productRouter);
+app.use("/api", apiRouter);
 
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
